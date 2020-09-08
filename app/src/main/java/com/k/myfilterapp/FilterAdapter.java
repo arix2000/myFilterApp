@@ -1,8 +1,6 @@
 package com.k.myfilterapp;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
@@ -12,17 +10,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.k.myfilterapp.roomDatabase.PhotoFilter;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.zip.Inflater;
 
-public class FiltersAdapter extends RecyclerView.Adapter<FiltersAdapter.FilterHolder>
+public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.FilterHolder>
 {
-    private List<PhotoFilter> filters;
+    private List<PhotoFilter> filters = new ArrayList<>();
     private Context context;
 
     @NonNull
@@ -64,5 +61,11 @@ public class FiltersAdapter extends RecyclerView.Adapter<FiltersAdapter.FilterHo
             filterName = itemView.findViewById(R.id.filter_name);
             filterPreview = itemView.findViewById(R.id.image_preview);
         }
+    }
+
+    public void setFilters(List<PhotoFilter> filters)
+    {
+        this.filters = filters;
+        notifyDataSetChanged();
     }
 }

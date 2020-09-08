@@ -1,11 +1,18 @@
 package com.k.myfilterapp.roomDatabase;
 
-import android.widget.ImageView;
+import android.content.Context;
+import android.graphics.Bitmap;
 
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import com.zomato.photofilters.imageprocessors.Filter;
+import com.zomato.photofilters.imageprocessors.subfilters.BrightnessSubFilter;
+import com.zomato.photofilters.imageprocessors.subfilters.ColorOverlaySubFilter;
+import com.zomato.photofilters.imageprocessors.subfilters.ContrastSubFilter;
+import com.zomato.photofilters.imageprocessors.subfilters.SaturationSubFilter;
+import com.zomato.photofilters.imageprocessors.subfilters.VignetteSubFilter;
 
 @Entity(tableName = "filterappdb")
 public class PhotoFilter
@@ -14,7 +21,7 @@ public class PhotoFilter
     int id;
     String filterName;
     int brightness;
-    int VignetteAlpha;
+    int vignetteAlpha;
     int colorDepth;
     float red;
     float green;
@@ -27,7 +34,7 @@ public class PhotoFilter
     {
         this.filterName = filterName;
         this.brightness = brightness;
-        VignetteAlpha = vignetteAlpha;
+        this.vignetteAlpha = vignetteAlpha;
         this.colorDepth = colorDepth;
         this.red = red;
         this.green = green;
@@ -35,11 +42,39 @@ public class PhotoFilter
         this.saturation = saturation;
         this.contrast = contrast;
     }
+    @Ignore
+    public PhotoFilter(String filterName, int brightness, int vignetteAlpha, float saturation, float contrast)
+    {
+        this.filterName = filterName;
+        this.brightness = brightness;
+        this.saturation = saturation;
+        this.contrast = contrast;
+        this.vignetteAlpha = vignetteAlpha;
+        this.colorDepth = 0;
+        this.red = 0;
+        this.green = 0;
+        this.blue = 0;
+
+    }
+    @Ignore
+    public PhotoFilter(String filterName, int brightness, float saturation, float contrast)
+    {
+        this.filterName = filterName;
+        this.brightness = brightness;
+        this.saturation = saturation;
+        this.contrast = contrast;
+        this.vignetteAlpha = 0;
+        this.colorDepth = 0;
+        this.red = 0;
+        this.green = 0;
+        this.blue = 0;
+    }
 
     public void setId(int id)
     {
         this.id = id;
     }
+
     public int getId()
     {
         return id;
@@ -49,36 +84,60 @@ public class PhotoFilter
     {
         return filterName;
     }
+
     public int getBrightness()
     {
         return brightness;
     }
+
     public int getVignetteAlpha()
     {
-        return VignetteAlpha;
+        return vignetteAlpha;
     }
+
     public int getColorDepth()
     {
         return colorDepth;
     }
+
     public float getRed()
     {
         return red;
     }
+
     public float getGreen()
     {
         return green;
     }
+
     public float getBlue()
     {
         return blue;
     }
+
     public float getSaturation()
     {
         return saturation;
     }
+
     public float getContrast()
     {
         return contrast;
+    }
+
+    public Bitmap getFilteredBitmapFrom(Bitmap bitmap, Context context)
+    {
+        Filter filter = new Filter();
+        Bitmap outputBitmap = bitmap.copy(bitmap.getConfig(), true);
+
+        filter.addSubFilter(new BrightnessSubFilter(brightness));
+        filter.addSubFilter(new ContrastSubFilter(contrast));
+        filter.addSubFilter(new SaturationSubFilter(saturation));
+        filter.addSubFilter(new VignetteSubFilter(context, vignetteAlpha));
+        filter.addSubFilter(new ColorOverlaySubFilter(colorDepth, red, green, blue));
+
+        outputBitmap = filter.processFilter(outputBitmap);
+
+        return outputBitmap;
     }
 }

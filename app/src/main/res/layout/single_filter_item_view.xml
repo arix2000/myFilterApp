@@ -9,7 +9,7 @@
     app:cardBackgroundColor="@color/recycleView">
 
     <ImageView
-        android:id="@+id/filter_image"
+        android:id="@+id/image_preview"
         android:foreground="@drawable/circle_for_single_item_view"
         android:layout_width="65dp"
         android:layout_height="65dp"

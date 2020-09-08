@@ -13,18 +13,19 @@
         android:layout_width="match_parent"
         android:layout_height="400dp"
         android:layout_above="@+id/recyclerView"
-        android:layout_alignParentTop="true"/>
+        android:layout_alignParentTop="true" />
 
     <androidx.recyclerview.widget.RecyclerView
-        tools:listitem="@layout/single_filter_item_view"
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         android:layout_alignParentBottom="true"
         android:background="@color/recycleView"
         android:orientation="horizontal"
-        android:padding="5dp" />
+        android:padding="5dp"
+        tools:listitem="@layout/single_filter_item_view" />
+
+    <!--app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"-->
 
 
 </RelativeLayout>
