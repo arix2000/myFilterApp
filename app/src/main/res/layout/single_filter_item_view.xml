@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="80dp"
+    android:layout_height="90dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:cardElevation="0dp"
+    app:contentPadding="2dp"
+    app:cardBackgroundColor="@color/recycleView">
+
+    <ImageView
+        android:id="@+id/filter_image"
+        android:foreground="@drawable/circle_for_single_item_view"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:layout_gravity="center_horizontal"
+        android:scaleType="centerCrop"
+        android:src="@drawable/pool_party" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/filter_name"
+        android:layout_gravity="bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/textColors"
+        android:textSize="12sp"
+        android:gravity="center_horizontal"
+        android:maxLines="1"
+        android:text="filter_name"
+        android:ellipsize="end"/>
+
+</androidx.cardview.widget.CardView>
