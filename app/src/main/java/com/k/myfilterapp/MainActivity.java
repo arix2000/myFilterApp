@@ -9,6 +9,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.ContentProvider;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -20,6 +22,7 @@ import com.zomato.photofilters.imageprocessors.subfilters.ColorOverlaySubFilter;
 import com.zomato.photofilters.imageprocessors.subfilters.ContrastSubFilter;
 import com.zomato.photofilters.imageprocessors.subfilters.VignetteSubFilter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity
@@ -27,8 +30,8 @@ public class MainActivity extends AppCompatActivity
 
     ImageView inputImage;
     RecyclerView recyclerView;
-    Filter filter;
     PhotoFilterViewModel filterViewModel;
+    List<PhotoFilter> localFilters = new ArrayList<>();
 
 
     @Override
@@ -39,16 +42,8 @@ public class MainActivity extends AppCompatActivity
         System.loadLibrary("NativeImageProcessor");
 
         inputImage = findViewById(R.id.input_image_view);
-        filter = new Filter();
-
         Bitmap inputBitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.pool_party);
-        Bitmap outputBitmap = inputBitmap.copy(inputBitmap.getConfig(), true);
-        filter.addSubFilter(new ColorOverlaySubFilter(100, .2f, .2f, .0f));
-        filter.addSubFilter(new VignetteSubFilter(this, 100));
-        filter.addSubFilter(new ContrastSubFilter(2f));
-
-        outputBitmap = filter.processFilter(outputBitmap);
-        inputImage.setImageBitmap(outputBitmap);
+        inputImage.setImageBitmap(inputBitmap);
 
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
@@ -66,6 +61,15 @@ public class MainActivity extends AppCompatActivity
             public void onChanged(List<PhotoFilter> photoFilters)
             {
                 filterAdapter.setFilters(photoFilters);
+            }
+        });
+
+        filterAdapter.setOnItemClickListener(new FilterAdapter.OnItemClickListener()
+        {
+            @Override
+            public void onItemClick(PhotoFilter filter)
+            {
+                inputImage.setImageBitmap(filter.getFilteredBitmap());
             }
         });
 

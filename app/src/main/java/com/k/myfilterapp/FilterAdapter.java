@@ -1,6 +1,7 @@
 package com.k.myfilterapp;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
@@ -21,6 +22,9 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.FilterHold
 {
     private List<PhotoFilter> filters = new ArrayList<>();
     private Context context;
+    private OnItemClickListener listener;
+
+
 
     @NonNull
     @Override
@@ -39,8 +43,15 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.FilterHold
     {
         PhotoFilter filter = filters.get(position);
         holder.filterName.setText(filter.getFilterName());
-        Drawable photo = holder.filterPreview.getDrawable();
-        holder.filterPreview.setImageBitmap(filter.getFilteredBitmapFrom(((BitmapDrawable)photo).getBitmap(),context));
+
+        if(filter.getFilteredBitmap() == null) {
+            Drawable photo = holder.filterPreview.getDrawable();
+            Bitmap image = filter.getFilteredBitmapFrom(((BitmapDrawable) photo).getBitmap(), context);
+
+            filter.setFilteredBitmap(image);
+        }
+
+        holder.filterPreview.setImageBitmap(filter.getFilteredBitmap());
 
     }
 
@@ -60,6 +71,19 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.FilterHold
             super(itemView);
             filterName = itemView.findViewById(R.id.filter_name);
             filterPreview = itemView.findViewById(R.id.image_preview);
+
+            itemView.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View view)
+                {
+                    int position = getAdapterPosition();
+                    if(listener!=null && position!= RecyclerView.NO_POSITION)
+                    {
+                        listener.onItemClick(filters.get(position));
+                    }
+                }
+            });
         }
     }
 
@@ -67,5 +91,20 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.FilterHold
     {
         this.filters = filters;
         notifyDataSetChanged();
+    }
+
+    public interface OnItemClickListener
+    {
+        void onItemClick(PhotoFilter filter);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener)
+    {
+        this.listener = listener;
+    }
+
+    public List<PhotoFilter> getFilters()
+    {
+        return filters;
     }
 }

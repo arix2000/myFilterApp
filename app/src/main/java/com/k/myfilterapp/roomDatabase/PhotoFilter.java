@@ -2,11 +2,14 @@ package com.k.myfilterapp.roomDatabase;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.view.View;
 
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+import com.k.myfilterapp.MainActivity;
+import com.k.myfilterapp.R;
 import com.zomato.photofilters.imageprocessors.Filter;
 import com.zomato.photofilters.imageprocessors.subfilters.BrightnessSubFilter;
 import com.zomato.photofilters.imageprocessors.subfilters.ColorOverlaySubFilter;
@@ -28,6 +31,8 @@ public class PhotoFilter
     float blue;
     float saturation;
     float contrast;
+    @Ignore
+    Bitmap filteredBitmap;
 
 
     public PhotoFilter(String filterName, int brightness, int vignetteAlpha, int colorDepth, float red, float green, float blue, float saturation, float contrast)
@@ -127,6 +132,7 @@ public class PhotoFilter
 
     public Bitmap getFilteredBitmapFrom(Bitmap bitmap, Context context)
     {
+
         Filter filter = new Filter();
         Bitmap outputBitmap = bitmap.copy(bitmap.getConfig(), true);
 
@@ -139,5 +145,16 @@ public class PhotoFilter
         outputBitmap = filter.processFilter(outputBitmap);
 
         return outputBitmap;
+    }
+
+
+    public Bitmap getFilteredBitmap()
+    {
+        return filteredBitmap;
+    }
+
+    public void setFilteredBitmap(Bitmap filteredBitmap)
+    {
+        this.filteredBitmap = filteredBitmap;
     }
 }

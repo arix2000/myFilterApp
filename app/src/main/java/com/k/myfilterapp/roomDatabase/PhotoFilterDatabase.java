@@ -65,6 +65,10 @@ public abstract class PhotoFilterDatabase extends RoomDatabase
         outputFilters.add(new PhotoFilter("example1",50,1.5f,1.5f));
         outputFilters.add(new PhotoFilter("example2",30,1.1f,1.2f));
         outputFilters.add(new PhotoFilter("example3",0,2f,0.7f));
+        outputFilters.add(new PhotoFilter("example4",0,2f,0.7f));
+        outputFilters.add(new PhotoFilter("example5",0,40f,0.7f));
+        outputFilters.add(new PhotoFilter("example6",0,2f,2f));
+        outputFilters.add(new PhotoFilter("example7",0,255,0.7f,1.5f));
 
         //in future i will add there more filters
 
