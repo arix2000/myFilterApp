@@ -21,10 +21,7 @@ import java.util.List;
 public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.FilterHolder>
 {
     private List<PhotoFilter> filters = new ArrayList<>();
-    private Context context;
     private OnItemClickListener listener;
-
-
 
     @NonNull
     @Override
@@ -32,9 +29,6 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.FilterHold
     {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.single_filter_item_view, parent, false);
-
-        context = parent.getContext();
-
         return new FilterHolder(itemView);
     }
 
@@ -43,14 +37,6 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.FilterHold
     {
         PhotoFilter filter = filters.get(position);
         holder.filterName.setText(filter.getFilterName());
-
-        if(filter.getFilteredBitmap() == null) {
-            Drawable photo = holder.filterPreview.getDrawable();
-            Bitmap image = filter.getFilteredBitmapFrom(((BitmapDrawable) photo).getBitmap(), context);
-
-            filter.setFilteredBitmap(image);
-        }
-
         holder.filterPreview.setImageBitmap(filter.getFilteredBitmap());
 
     }
@@ -103,8 +89,6 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.FilterHold
         this.listener = listener;
     }
 
-    public List<PhotoFilter> getFilters()
-    {
-        return filters;
-    }
+
+
 }

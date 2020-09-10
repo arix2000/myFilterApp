@@ -2,14 +2,11 @@ package com.k.myfilterapp.roomDatabase;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.view.View;
 
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-import com.k.myfilterapp.MainActivity;
-import com.k.myfilterapp.R;
 import com.zomato.photofilters.imageprocessors.Filter;
 import com.zomato.photofilters.imageprocessors.subfilters.BrightnessSubFilter;
 import com.zomato.photofilters.imageprocessors.subfilters.ColorOverlaySubFilter;

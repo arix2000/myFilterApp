@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/layoutBg"
+    tools:context=".GalleryActivity">
+
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/ic_main_logo_my_filter_app_vector" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#99000000" />
+
+    <ImageView
+        android:layout_margin="16dp"
+        android:id="@+id/photo_to_filter"
+        android:layout_width="match_parent"
+        android:layout_height="600dp"
+        android:layout_above="@id/btn_choose_photo"
+        android:layout_alignParentTop="true" />
+
+
+    <Button
+        android:id="@+id/btn_choose_photo"
+        style="@style/button_style"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginVertical="16dp"
+        android:layout_marginBottom="16dp"
+        android:paddingHorizontal="12dp"
+        android:text="wybierz zdjecie" />
+
+    <ImageButton
+        android:id="@+id/btn_continue"
+        style="@style/button_style"
+        android:layout_alignParentRight="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="16dp"
+        android:layout_marginBottom="16dp"
+        android:padding="11dp"
+        android:src="@drawable/ic_continue"
+        android:text="kontynuuj" />
+
+
+</RelativeLayout>
