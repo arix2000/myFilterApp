@@ -32,14 +32,14 @@ public class MainScreenActivity extends AppCompatActivity
 {
 
     private static final String TAG = "MAIN_SCREEN_LOG_TAG";
-    ImageView inputImage;
-    RecyclerView recyclerView;
-    PhotoFilterViewModel filterViewModel;
-    FilterAdapter filterAdapter;
-    Bitmap mainBitmap;
-    ProgressBar progressBar;
-    PhotoFilter currentOnClickFilter;
-    PhotoFilter previousOnClickFilter;
+    public static Bitmap mainImage; //he should not changing
+    private Bitmap mainBitmap; // he can changing
+    private ImageView inputImage;
+    private PhotoFilterViewModel filterViewModel;
+    private FilterAdapter filterAdapter;
+    private ProgressBar progressBar;
+    private PhotoFilter currentOnClickFilter;
+    private PhotoFilter previousOnClickFilter;
 
 
     @Override
@@ -51,7 +51,7 @@ public class MainScreenActivity extends AppCompatActivity
         progressBar = findViewById(R.id.recycler_view_progress_bar);
 
         inputImage = findViewById(R.id.photo_to_filter);
-        mainBitmap = getResizedImageBitmapFromIntent();
+        mainBitmap = mainImage;
         inputImage.setImageBitmap(mainBitmap);
 
         filterViewModel = new ViewModelProvider(this,
@@ -62,15 +62,15 @@ public class MainScreenActivity extends AppCompatActivity
         initRecycleViewThings();
     }
 
-    private Bitmap getResizedImageBitmapFromIntent()
+    /*private Bitmap getResizedImageBitmapFromIntent()
     {
         Intent intent = getIntent();
         Uri imageUri = intent.getParcelableExtra(GalleryActivity.EXTRA_IMAGE_URI);
         Bitmap originalBitmap = uriToBitmap(imageUri);
         return resizeBitmap(originalBitmap);
-    }
+    }*/
 
-    protected Bitmap uriToBitmap(Uri imageUri) {
+    /*protected Bitmap uriToBitmap(Uri imageUri) {
 
         Bitmap image = null;
         try {
@@ -114,7 +114,7 @@ public class MainScreenActivity extends AppCompatActivity
         ByteArrayOutputStream outStream = new ByteArrayOutputStream();
         scaledBitmap.compress(Bitmap.CompressFormat.JPEG, 70, outStream);
         return scaledBitmap;
-    }
+    } */
 
     private void initAddButtonListener()
     {
@@ -133,12 +133,11 @@ public class MainScreenActivity extends AppCompatActivity
     private void openSendToAddActivity()
     {
         //TODO open add activity and Send our bitmap there
-        //TODO what about writeing bitmap to file and from there get it back
     }
 
     private void initRecycleViewThings()
     {
-        recyclerView = findViewById(R.id.recycler_view);
+        RecyclerView recyclerView = findViewById(R.id.recycler_view);
         filterAdapter = new FilterAdapter();
         filterAdapter.setProgressBar(progressBar);
         setRecycleViewSettings(filterAdapter, recyclerView);

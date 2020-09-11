@@ -4,15 +4,19 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ShapeDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 
 public class GalleryActivity extends AppCompatActivity
 {
@@ -23,7 +27,7 @@ public class GalleryActivity extends AppCompatActivity
     private ImageView inputImage;
     private ImageButton continueButton;
     private ButtonShape continueButtonShape;
-    private Uri imageUri;
+    private Uri originalImageUri;
 
 
     @Override
@@ -95,8 +99,55 @@ public class GalleryActivity extends AppCompatActivity
     private void openSendToMainScreenActivity()
     {
         Intent intent = new Intent(this, LoadingActivity.class);
-        intent.putExtra(EXTRA_IMAGE_URI,imageUri);
+        Bitmap originalBitmap = uriToBitmap(originalImageUri);
+        MainScreenActivity.mainImage = resizeBitmap(originalBitmap);
         startActivity(intent);
+    }
+
+    protected Bitmap uriToBitmap(Uri imageUri) {
+
+        Bitmap image = null;
+        try {
+            image = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return image;
+    }
+
+    protected Bitmap resizeBitmap(Bitmap bitmap)
+    {
+        Bitmap scaledBitmap;
+
+        int origWidth = bitmap.getWidth();
+        int origHeight = bitmap.getHeight();
+        int destHeight;
+        int destWidth;
+
+        if (origWidth > 3000) {
+            destWidth = origWidth / 4;
+            destHeight = origHeight / 4;
+            scaledBitmap = scaleBitmapTo(destHeight, destWidth, bitmap);
+        }
+        else if(origWidth > 1000)
+        {
+            destHeight = origHeight / 2;
+            destWidth = origWidth / 2;
+            scaledBitmap = scaleBitmapTo(destHeight, destWidth, bitmap);
+        }
+        else
+            scaledBitmap = bitmap; // we don't have to scale
+
+        return scaledBitmap;
+    }
+
+    protected Bitmap scaleBitmapTo(int destinationHeight, int destinationWidth, Bitmap bitmap)
+    {
+        Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap, destinationWidth, destinationHeight, false);
+        ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+        scaledBitmap.compress(Bitmap.CompressFormat.JPEG, 70, outStream);
+        return scaledBitmap;
     }
 
     @Override
@@ -105,8 +156,8 @@ public class GalleryActivity extends AppCompatActivity
         super.onActivityResult(requestCode, resultCode, data);
 
         if (data != null) {
-            imageUri = data.getData();
-            inputImage.setImageURI(imageUri);
+            originalImageUri = data.getData();
+            inputImage.setImageURI(originalImageUri);
         }
 
     }
