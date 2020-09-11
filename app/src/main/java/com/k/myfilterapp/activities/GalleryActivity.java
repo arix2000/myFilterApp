@@ -1,4 +1,4 @@
-package com.k.myfilterapp;
+package com.k.myfilterapp.activities;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,6 +14,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+
+import com.k.myfilterapp.ButtonShape;
+import com.k.myfilterapp.R;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

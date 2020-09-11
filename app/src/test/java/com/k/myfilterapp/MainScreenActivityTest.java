@@ -2,6 +2,8 @@ package com.k.myfilterapp;
 
 import android.net.Uri;
 
+import com.k.myfilterapp.activities.MainScreenActivity;
+
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

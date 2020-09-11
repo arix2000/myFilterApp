@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/layoutBg"
     android:padding="10dp"
-    tools:context=".MainScreenActivity">
+    tools:context=".activities.MainScreenActivity">
 
     <ImageView
         android:id="@+id/photo_to_filter"

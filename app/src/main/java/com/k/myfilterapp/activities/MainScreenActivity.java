@@ -1,4 +1,4 @@
-package com.k.myfilterapp;
+package com.k.myfilterapp.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
@@ -8,24 +8,21 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.graphics.Typeface;
 import android.graphics.drawable.ShapeDrawable;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.k.myfilterapp.ButtonShape;
+import com.k.myfilterapp.FilterAdapter;
+import com.k.myfilterapp.R;
 import com.k.myfilterapp.roomDatabase.ChangeFiltersStateHelper;
 import com.k.myfilterapp.roomDatabase.PhotoFilter;
 import com.k.myfilterapp.roomDatabase.PhotoFilterViewModel;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.util.List;
 
 public class MainScreenActivity extends AppCompatActivity
@@ -62,59 +59,6 @@ public class MainScreenActivity extends AppCompatActivity
         initRecycleViewThings();
     }
 
-    /*private Bitmap getResizedImageBitmapFromIntent()
-    {
-        Intent intent = getIntent();
-        Uri imageUri = intent.getParcelableExtra(GalleryActivity.EXTRA_IMAGE_URI);
-        Bitmap originalBitmap = uriToBitmap(imageUri);
-        return resizeBitmap(originalBitmap);
-    }*/
-
-    /*protected Bitmap uriToBitmap(Uri imageUri) {
-
-        Bitmap image = null;
-        try {
-            image = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return image;
-    }
-
-    protected Bitmap resizeBitmap(Bitmap bitmap)
-    {
-        Bitmap scaledBitmap;
-
-        int origWidth = bitmap.getWidth();
-        int origHeight = bitmap.getHeight();
-        int destHeight;
-        int destWidth;
-
-        if (origWidth > 3000) {
-            destWidth = origWidth / 4;
-            destHeight = origHeight / 4;
-            scaledBitmap = scaleBitmapTo(destHeight, destWidth, bitmap);
-        }
-        else if(origWidth > 1000)
-        {
-            destHeight = origHeight / 2;
-            destWidth = origWidth / 2;
-            scaledBitmap = scaleBitmapTo(destHeight, destWidth, bitmap);
-        }
-        else
-            scaledBitmap = bitmap; // we don't have to scale
-
-        return scaledBitmap;
-    }
-
-    protected Bitmap scaleBitmapTo(int destinationHeight, int destinationWidth, Bitmap bitmap)
-    {
-        Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap, destinationWidth, destinationHeight, false);
-        ByteArrayOutputStream outStream = new ByteArrayOutputStream();
-        scaledBitmap.compress(Bitmap.CompressFormat.JPEG, 70, outStream);
-        return scaledBitmap;
-    } */
 
     private void initAddButtonListener()
     {
@@ -132,7 +76,8 @@ public class MainScreenActivity extends AppCompatActivity
 
     private void openSendToAddActivity()
     {
-        //TODO open add activity and Send our bitmap there
+        Intent intent = new Intent(this, AddSetFilterActivity.class);
+        startActivity(intent);
     }
 
     private void initRecycleViewThings()
