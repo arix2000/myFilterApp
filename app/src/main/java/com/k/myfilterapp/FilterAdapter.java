@@ -1,18 +1,17 @@
 package com.k.myfilterapp;
 
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.k.myfilterapp.roomDatabase.ChangeFiltersStateHelper;
 import com.k.myfilterapp.roomDatabase.PhotoFilter;
 
 import java.util.ArrayList;
@@ -22,6 +21,7 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.FilterHold
 {
     private List<PhotoFilter> filters = new ArrayList<>();
     private OnItemClickListener listener;
+    private ProgressBar progressBar;
 
     @NonNull
     @Override
@@ -38,8 +38,26 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.FilterHold
         PhotoFilter filter = filters.get(position);
         holder.filterName.setText(filter.getFilterName());
         holder.filterPreview.setImageBitmap(filter.getFilteredBitmap());
+        Log.d("ADAPTER_TAG", "onCreate: Im done!");
+        progressBar.setVisibility(View.GONE);
+        checkWasClicked(holder, position);
 
     }
+
+    private void checkWasClicked(FilterHolder holder, int position)
+    {
+        PhotoFilter filter = filters.get(position);
+        if(filter.isWasClicked())
+        {
+            ChangeFiltersStateHelper.setCurrentTextViewTypeface(holder.filterName);
+        }
+        else
+        {
+            ChangeFiltersStateHelper.removePreviousTextViewTypeface(holder.filterName);
+        }
+    }
+
+
 
     @Override
     public int getItemCount()
@@ -66,7 +84,7 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.FilterHold
                     int position = getAdapterPosition();
                     if(listener!=null && position!= RecyclerView.NO_POSITION)
                     {
-                        listener.onItemClick(filters.get(position));
+                        listener.onItemClick(filters.get(position), filterName);
                     }
                 }
             });
@@ -81,7 +99,7 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.FilterHold
 
     public interface OnItemClickListener
     {
-        void onItemClick(PhotoFilter filter);
+        void onItemClick(PhotoFilter filter, TextView filterPreview);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener)
@@ -89,6 +107,8 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.FilterHold
         this.listener = listener;
     }
 
-
-
+    public void setProgressBar(ProgressBar progressBar)
+    {
+        this.progressBar = progressBar;
+    }
 }

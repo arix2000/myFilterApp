@@ -12,11 +12,11 @@
         android:id="@+id/photo_to_filter"
         android:layout_width="match_parent"
         android:layout_height="400dp"
-        android:layout_above="@+id/recyclerView"
+        android:layout_above="@+id/recycler_view"
         android:layout_alignParentTop="true" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
+        android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:layout_alignParentBottom="true"
@@ -35,7 +35,15 @@
         android:layout_marginBottom="10dp"
         android:padding="10dp"
         android:src="@drawable/ic_add"
-        android:layout_above="@+id/recyclerView"/>
+        android:layout_above="@+id/recycler_view"/>
+
+    <ProgressBar
+        android:id="@+id/recycler_view_progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="26dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"/>
 
 
 </RelativeLayout>

@@ -31,6 +31,9 @@ public class PhotoFilter
     @Ignore
     Bitmap filteredBitmap;
 
+    @Ignore
+    boolean isWasClicked;
+
 
     public PhotoFilter(String filterName, int brightness, int vignetteAlpha, int colorDepth, float red, float green, float blue, float saturation, float contrast)
     {
@@ -153,5 +156,15 @@ public class PhotoFilter
     public void setFilteredBitmap(Bitmap filteredBitmap)
     {
         this.filteredBitmap = filteredBitmap;
+    }
+
+    public boolean isWasClicked()
+    {
+        return isWasClicked;
+    }
+
+    public void setWasClicked(boolean wasClicked)
+    {
+        isWasClicked = wasClicked;
     }
 }
