@@ -26,13 +26,103 @@
 
             <TextView
                 style="@style/textViews"
-                android:text="Jasność"/>
+                android:text="Jasność" />
 
-            <androidx.appcompat.widget.AppCompatSeekBar
+            <SeekBar
                 android:id="@+id/brightness_seek_bar"
                 style="@style/seekBars" />
+
             <TextView
                 android:id="@+id/brightness_value"
+                style="@style/numberTextViews"
+                android:text="0" />
+
+            <TextView
+                style="@style/textViews"
+                android:text="Kontrast" />
+
+            <SeekBar
+                android:id="@+id/contrast_seek_bar"
+                style="@style/seekBars" />
+
+            <TextView
+                android:id="@+id/contrast_value"
+                style="@style/numberTextViews"
+                android:text="1" />
+
+            <TextView
+                style="@style/textViews"
+                android:text="Winieta" />
+
+            <SeekBar
+                android:id="@+id/vignette_seek_bar"
+                style="@style/seekBars" />
+
+            <TextView
+                android:id="@+id/vignette_value"
+                style="@style/numberTextViews"
+                android:text="0" />
+
+            <TextView
+                style="@style/textViews"
+                android:text="Nasycenie" />
+
+            <SeekBar
+                android:id="@+id/saturation_seek_bar"
+                style="@style/seekBars" />
+
+            <TextView
+                android:id="@+id/saturation_value"
+                style="@style/numberTextViews"
+                android:text="0" />
+
+            <TextView
+                style="@style/textViews"
+                android:text="Głębia koloru" />
+
+            <SeekBar
+                android:id="@+id/color_depth_seek_bar"
+                style="@style/seekBars" />
+
+            <TextView
+                android:id="@+id/color_depth_value"
+                style="@style/numberTextViews"
+                android:text="0" />
+
+            <TextView
+                style="@style/textViews"
+                android:text="Czerwony" />
+
+            <SeekBar
+                android:id="@+id/red_seek_bar"
+                style="@style/seekBars" />
+
+            <TextView
+                android:id="@+id/red_value"
+                style="@style/numberTextViews"
+                android:text="0" />
+            <TextView
+                style="@style/textViews"
+                android:text="Zielony" />
+
+            <SeekBar
+                android:id="@+id/green_seek_bar"
+                style="@style/seekBars" />
+
+            <TextView
+                android:id="@+id/green_value"
+                style="@style/numberTextViews"
+                android:text="0" />
+            <TextView
+                style="@style/textViews"
+                android:text="Niebieski" />
+
+            <SeekBar
+                android:id="@+id/blue_seek_bar"
+                style="@style/seekBars" />
+
+            <TextView
+                android:id="@+id/blue_value"
                 style="@style/numberTextViews"
                 android:text="0" />
 

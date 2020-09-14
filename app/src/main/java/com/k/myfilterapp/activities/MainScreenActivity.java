@@ -22,6 +22,9 @@ import com.k.myfilterapp.R;
 import com.k.myfilterapp.roomDatabase.ChangeFiltersStateHelper;
 import com.k.myfilterapp.roomDatabase.PhotoFilter;
 import com.k.myfilterapp.roomDatabase.PhotoFilterViewModel;
+import com.zomato.photofilters.imageprocessors.Filter;
+import com.zomato.photofilters.imageprocessors.subfilters.BrightnessSubFilter;
+import com.zomato.photofilters.imageprocessors.subfilters.ContrastSubFilter;
 
 import java.util.List;
 
@@ -49,13 +52,14 @@ public class MainScreenActivity extends AppCompatActivity
 
         inputImage = findViewById(R.id.photo_to_filter);
         mainBitmap = mainImage;
+        Filter filter = new Filter();
+        mainBitmap = filter.processFilter(mainBitmap);
         inputImage.setImageBitmap(mainBitmap);
 
         filterViewModel = new ViewModelProvider(this,
                 new ViewModelProvider.AndroidViewModelFactory(this.getApplication())).get(PhotoFilterViewModel.class);
 
         initAddButtonListener();
-
         initRecycleViewThings();
     }
 
