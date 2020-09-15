@@ -8,11 +8,28 @@
     android:padding="10dp"
     tools:context=".activities.AddSetFilterActivity">
 
+    <TextView
+        android:id="@+id/created_filter_name_text_view"
+        style="@style/textViews"
+        android:layout_margin="0dp"
+        android:layout_alignParentTop="true"
+        android:text="Nadaj nazwe: " />
+
+    <EditText
+        android:id="@+id/created_filter_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxLines="1"
+        android:hint="np. lato"
+        android:layout_below="@+id/created_filter_name_text_view"
+        android:textColorHint="@color/textColors"
+        app:backgroundTint="@color/textColors"/>
+
     <ImageView
         android:id="@+id/vignette_and_saturation_preview"
         android:layout_width="match_parent"
         android:layout_height="400dp"
-        android:layout_alignParentTop="true" />
+        android:layout_below="@+id/created_filter_name"/>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -50,6 +67,7 @@
                 android:id="@+id/vignette_value"
                 style="@style/numberTextViews"
                 android:text="0" />
+
 
             <Button
                 android:id="@+id/btn_save_filter"

@@ -9,10 +9,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.VignetteAndSaturationActivity"></activity>
+        <activity android:name=".activities.VignetteAndSaturationActivity"/>
         <activity android:name=".activities.AddSetFilterActivity" />
         <activity android:name=".activities.LoadingActivity" />
-        <activity android:name=".activities.MainScreenActivity" />
+        <activity android:name=".activities.MainScreenActivity" android:parentActivityName=".activities.GalleryActivity"/>
         <activity android:name=".activities.GalleryActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

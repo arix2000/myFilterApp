@@ -1,18 +1,26 @@
 package com.k.myfilterapp.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.ViewCompat;
 
+import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
+import android.provider.CalendarContract;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.k.myfilterapp.R;
 import com.k.myfilterapp.SeekBarOptions;
+import com.k.myfilterapp.roomDatabase.PhotoFilter;
+import com.k.myfilterapp.roomDatabase.PhotoFilterViewModel;
 import com.zomato.photofilters.imageprocessors.Filter;
 import com.zomato.photofilters.imageprocessors.SubFilter;
 import com.zomato.photofilters.imageprocessors.subfilters.SaturationSubFilter;
@@ -36,7 +44,9 @@ public class VignetteAndSaturationActivity extends AppCompatActivity
     private SaturationSubFilter saturationSubFilter;
     private VignetteSubFilter vignetteSubFilter;
     private Filter filter;
+    private PhotoFilterViewModel viewModel;
     private Bundle previousFilterInfo;
+    private EditText filterName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -48,6 +58,8 @@ public class VignetteAndSaturationActivity extends AppCompatActivity
         filter = new Filter();
         mainBitmap = Bitmap.createBitmap(mainImage);
         preview.setImageBitmap(mainBitmap);
+        viewModel = new PhotoFilterViewModel(getApplication());
+        filterName = findViewById(R.id.created_filter_name);
 
         setSaveBtnListener();
         initSubFilters();
@@ -63,13 +75,50 @@ public class VignetteAndSaturationActivity extends AppCompatActivity
             @Override
             public void onClick(View view)
             {
-                saveFilter();
+                decideAndSaveFilter();
             }
         });
     }
 
+    private void decideAndSaveFilter()
+    {
+        if(filterName.getText().toString().trim().isEmpty())
+        {
+            TextView nameFilterTextView = findViewById(R.id.created_filter_name_text_view);
+            Toast.makeText(this, "Pole z nazwą musi być wypełnione!", Toast.LENGTH_SHORT).show();
+            filterName.setBackgroundTintList(ColorStateList.valueOf(Color.RED));
+            nameFilterTextView.setTextColor(Color.RED);
+        }
+        else
+        {
+            saveFilter();
+        }
+
+    }
+
     private void saveFilter()
     {
+        Bundle bundle = getIntent().getExtras();
+        int brightness = bundle.getInt(AddSetFilterActivity.EXTRA_BRIGHTNESS, 0);
+        int vignette = Integer.parseInt(vignetteValue.getText().toString());
+        int colorDepth = bundle.getInt(AddSetFilterActivity.EXTRA_DEPTH_INT, 0);
+        float red = bundle.getFloat(AddSetFilterActivity.EXTRA_RED_FLOAT, 0);
+        float green = bundle.getFloat(AddSetFilterActivity.EXTRA_GREEN_FLOAT, 0);
+        float blue = bundle.getFloat(AddSetFilterActivity.EXTRA_BLUE_FLOAT, 0);
+        float saturation = Float.parseFloat(saturationValue.getText().toString());
+        float contrast = bundle.getFloat(AddSetFilterActivity.EXTRA_CONTRAST, 0);
+
+        PhotoFilter createdFilter = new PhotoFilter(filterName.getText().toString(),
+                brightness,vignette,colorDepth,red,green,blue,saturation,contrast);
+
+        viewModel.insert(createdFilter);
+        backToMainScreen();
+    }
+
+    private void backToMainScreen()
+    {
+        Intent intent = new Intent(this, MainScreenActivity.class);
+        startActivity(intent);
     }
 
     private void initSubFilters()

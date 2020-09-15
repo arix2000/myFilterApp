@@ -129,8 +129,8 @@ public class GalleryActivity extends AppCompatActivity
         int destWidth;
 
         if (origWidth > 3000) {
-            destWidth = origWidth / 4;
-            destHeight = origHeight / 4;
+            destWidth = origWidth / 5;
+            destHeight = origHeight / 5;
             scaledBitmap = scaleBitmapTo(destHeight, destWidth, bitmap);
         }
         else if(origWidth > 1000)

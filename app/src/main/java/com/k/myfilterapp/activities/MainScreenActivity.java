@@ -144,4 +144,12 @@ public class MainScreenActivity extends AppCompatActivity
 
         inputImage.setImageBitmap(currentOnClickFilter.getFilteredBitmap());
     }
+
+    @Override
+    public void onBackPressed()
+    {
+        Intent intent = new Intent(this, GalleryActivity.class);
+        startActivity(intent);
+
+    }
 }

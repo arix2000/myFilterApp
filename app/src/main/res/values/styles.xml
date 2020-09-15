@@ -32,7 +32,6 @@
     </style>
 
     <style name="seekBars">
-        <item name="android:max">200</item>
         <item name="android:tint">@color/colorAccent</item>
         <item name="android:progressBackgroundTint">@color/textColors</item>
         <item name="android:layout_width">match_parent</item>
