@@ -2,6 +2,7 @@ package com.k.myfilterapp.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.ShapeDrawable;
 import android.os.Bundle;
@@ -32,10 +33,15 @@ public class AddSetFilterActivity extends AppCompatActivity
     public static final int CONTRAST_POSITION = 0;
     public static final int COLOR_OVERLAY_POSITION = 2;
     public static final int BRIGHTNESS_POSITION = 1;
-    public static final int VIGNETTE_POSITION = 3;
 
+    public static final String EXTRA_BRIGHTNESS = "com.k.myfilterapp.activities.EXTRA_BRIGHTNESS";
+    public static final String EXTRA_CONTRAST = "com.k.myfilterapp.activities.EXTRA_CONTRAST";
+    public static final String EXTRA_DEPTH_INT = "com.k.myfilterapp.activities.EXTRA_DEPTH_INT";
+    public static final String EXTRA_RED_FLOAT = "com.k.myfilterapp.activities.EXTRA_RED_FLOAT";
+    public static final String EXTRA_GREEN_FLOAT = "com.k.myfilterapp.activities.EXTRA_GREEN_FLOAT";
+    public static final String EXTRA_BLUE_FLOAT = "com.k.myfilterapp.activities.EXTRA_BLUE_FLOAT";
 
-    Bitmap previewBitmap, bufferBitmap;
+    Bitmap previewBitmap;
     private Bitmap mainBitmap = MainScreenActivity.mainImage;
     ImageView preview;
     SeekBar brightness, contrast, depth, red, green, blue;
@@ -60,22 +66,26 @@ public class AddSetFilterActivity extends AppCompatActivity
         previewBitmap = Bitmap.createBitmap(mainBitmap);
         btnVignetteAndSaturation = findViewById(R.id.btn_vignette_and_saturation);
 
-        redFloat = 0;
-        greenFloat = 0;
-        blueFloat = 0;
-        depthInt = 0;
-
+        initColorOverlayValues();
 
         filter = new Filter();
 
-        initSubFilters();
         initBtnOnClickListener();
+        initSubFilters();
+        initSeekBarAndCounters();
         preview.setImageBitmap(mainBitmap);
-        setSeekBarAndCounters();
         setBrightnessListener();
         setContrastListener();
         setDepthListener();
         setRGBListener();
+    }
+
+    private void initColorOverlayValues()
+    {
+        redFloat = 0;
+        greenFloat = 0;
+        blueFloat = 0;
+        depthInt = 0;
     }
 
     private void initBtnOnClickListener()
@@ -86,20 +96,39 @@ public class AddSetFilterActivity extends AppCompatActivity
             @Override
             public void onClick(View view)
             {
-
+                openNextActivity();
             }
         });
+    }
+
+    private void openNextActivity()
+    {
+        VignetteAndSaturationActivity.mainImage = Bitmap.createBitmap(previewBitmap);
+        Intent intent = new Intent(this,VignetteAndSaturationActivity.class);
+        Bundle bundle = createBundleFromFiltersValue();
+        intent.putExtras(bundle);
+
+        startActivity(intent);
+    }
+
+    private Bundle createBundleFromFiltersValue()
+    {
+        Bundle bundle = new Bundle();
+        bundle.putInt(EXTRA_BRIGHTNESS, brightnessSubFilter.getBrightness());
+        bundle.putInt(EXTRA_DEPTH_INT, depthInt);
+        bundle.putFloat(EXTRA_CONTRAST, contrastSubFilter.getContrast());
+        bundle.putFloat(EXTRA_RED_FLOAT, redFloat);
+        bundle.putFloat(EXTRA_GREEN_FLOAT, greenFloat);
+        bundle.putFloat(EXTRA_BLUE_FLOAT, blueFloat);
+        return bundle;
     }
 
     private void initSubFilters()
     {
         brightnessSubFilter = new BrightnessSubFilter(0);
         contrastSubFilter = new ContrastSubFilter(1);
-
-
         vignetteSubFilter = new VignetteSubFilter(this, 0);
         colorOverlaySubFilter = new ColorOverlaySubFilter(0, 0f, 0f, 0f);
-
 
         subFilters = new ArrayList<>();
         subFilters.add(contrastSubFilter);
@@ -108,7 +137,7 @@ public class AddSetFilterActivity extends AppCompatActivity
 
     }
 
-    private void setSeekBarAndCounters()
+    private void initSeekBarAndCounters()
     {
         brightness = findViewById(R.id.brightness_seek_bar);
         brightnessValue = findViewById(R.id.brightness_value);

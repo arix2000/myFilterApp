@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/layoutBg"
+    android:padding="10dp"
+    tools:context=".activities.AddSetFilterActivity">
+
+    <ImageView
+        android:id="@+id/vignette_and_saturation_preview"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:layout_alignParentTop="true" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/vignette_and_saturation_preview"
+        android:scrollbarThumbVertical="@color/colorAccent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/textViews"
+                android:text="Nasycenie" />
+
+            <SeekBar
+                android:id="@+id/saturation_seek_bar"
+                style="@style/seekBars" />
+
+            <TextView
+                android:id="@+id/saturation_value"
+                style="@style/numberTextViews"
+                android:text="1" />
+
+            <TextView
+                style="@style/textViews"
+                android:text="Winieta" />
+
+            <SeekBar
+                android:id="@+id/vignette_seek_bar"
+                style="@style/seekBars" />
+
+            <TextView
+                android:id="@+id/vignette_value"
+                style="@style/numberTextViews"
+                android:text="0" />
+
+            <Button
+                android:id="@+id/btn_save_filter"
+                style="@style/button_style"
+                android:layout_marginTop="16dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_width="wrap_content"
+                android:text="zapisz filtr"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>
