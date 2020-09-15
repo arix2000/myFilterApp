@@ -3,12 +3,16 @@ package com.k.myfilterapp.activities;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.graphics.Bitmap;
+import android.graphics.drawable.ShapeDrawable;
 import android.os.Bundle;
 
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.k.myfilterapp.ButtonShape;
 import com.k.myfilterapp.R;
 import com.k.myfilterapp.SeekBarOptions;
 import com.zomato.photofilters.imageprocessors.Filter;
@@ -41,6 +45,7 @@ public class AddSetFilterActivity extends AppCompatActivity
     VignetteSubFilter vignetteSubFilter;
     ColorOverlaySubFilter colorOverlaySubFilter;
     Filter filter;
+    Button btnVignetteAndSaturation;
     List<SubFilter> subFilters;
     float redFloat, greenFloat, blueFloat;
     int depthInt;
@@ -53,24 +58,40 @@ public class AddSetFilterActivity extends AppCompatActivity
 
         preview = findViewById(R.id.add_filter_preview);
         previewBitmap = Bitmap.createBitmap(mainBitmap);
+        btnVignetteAndSaturation = findViewById(R.id.btn_vignette_and_saturation);
 
-        redFloat = 0; greenFloat = 0; blueFloat = 0; depthInt = 0;
+        redFloat = 0;
+        greenFloat = 0;
+        blueFloat = 0;
+        depthInt = 0;
 
 
         filter = new Filter();
-        InitSubFilters();
 
+        initSubFilters();
+        initBtnOnClickListener();
         preview.setImageBitmap(mainBitmap);
-
         setSeekBarAndCounters();
-
         setBrightnessListener();
         setContrastListener();
         setDepthListener();
         setRGBListener();
     }
 
-    private void InitSubFilters()
+    private void initBtnOnClickListener()
+    {
+        btnVignetteAndSaturation.setBackground(new ShapeDrawable(new ButtonShape()));
+        btnVignetteAndSaturation.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+
+            }
+        });
+    }
+
+    private void initSubFilters()
     {
         brightnessSubFilter = new BrightnessSubFilter(0);
         contrastSubFilter = new ContrastSubFilter(1);
@@ -96,9 +117,6 @@ public class AddSetFilterActivity extends AppCompatActivity
         contrast = findViewById(R.id.contrast_seek_bar);
         contrastValue = findViewById(R.id.contrast_value);
         setSeekBar(contrast, new SeekBarOptions(20, 100, 220));
-        /*saturation = findViewById(R.id.saturation_seek_bar);
-        saturationValue = findViewById(R.id.saturation_value);
-        setSeekBar(saturation, new SeekBarOptions(20, 100, 220));*/
 
         depth = findViewById(R.id.color_depth_seek_bar);
         depthValue = findViewById(R.id.color_depth_value);
@@ -115,8 +133,6 @@ public class AddSetFilterActivity extends AppCompatActivity
         blue = findViewById(R.id.blue_seek_bar);
         blueValue = findViewById(R.id.blue_value);
         setSeekBar(blue, new SeekBarOptions(0, 0, 100));
-
-
     }
 
     private void setSeekBar(SeekBar seekBar, SeekBarOptions seekBarOptions)
@@ -138,29 +154,26 @@ public class AddSetFilterActivity extends AppCompatActivity
             }
 
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar)
-            {
-
-            }
-
+            public void onStartTrackingTouch(SeekBar seekBar){}
             @Override
-            public void onStopTrackingTouch(SeekBar seekBar)
-            {
-                brightnessSubFilter.setBrightness(Integer.parseInt(brightnessValue.getText().toString()));
-                filter.clearSubFilters();
-            }
+            public void onStopTrackingTouch(SeekBar seekBar) {}
         });
     }
 
     private void setBrightnessOnPreview(int i)
     {
-        previewBitmap = Bitmap.createBitmap(mainBitmap);
         brightnessSubFilter.setBrightness(i);
         subFilters.set(BRIGHTNESS_POSITION, brightnessSubFilter);
+        applyFilterOnMainBitmap();
+    }
+
+    private void applyFilterOnMainBitmap()
+    {
+        previewBitmap = Bitmap.createBitmap(mainBitmap);
         filter.addSubFilters(subFilters);
         previewBitmap = filter.processFilter(previewBitmap);
-        preview.setImageBitmap(previewBitmap);
         filter.clearSubFilters();
+        preview.setImageBitmap(previewBitmap);
     }
 
     private void setContrastListener()
@@ -176,29 +189,17 @@ public class AddSetFilterActivity extends AppCompatActivity
             }
 
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar)
-            {
-
-            }
-
+            public void onStartTrackingTouch(SeekBar seekBar){}
             @Override
-            public void onStopTrackingTouch(SeekBar seekBar)
-            {
-                contrastSubFilter.setContrast(Float.parseFloat(contrastValue.getText().toString()));
-                filter.clearSubFilters();
-            }
+            public void onStopTrackingTouch(SeekBar seekBar) {}
         });
     }
 
     private void setContrastOnPreview(float value)
     {
-        previewBitmap = Bitmap.createBitmap(mainBitmap);
         contrastSubFilter.setContrast(value / 100);
         subFilters.set(CONTRAST_POSITION, contrastSubFilter);
-        filter.addSubFilters(subFilters);
-        previewBitmap = filter.processFilter(previewBitmap);
-        filter.clearSubFilters();
-        preview.setImageBitmap(previewBitmap);
+        applyFilterOnMainBitmap();
     }
 
     protected float convertHundredToFloatFrom(int value)
@@ -219,28 +220,17 @@ public class AddSetFilterActivity extends AppCompatActivity
             }
 
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar)
-            {
-
-            }
-
+            public void onStartTrackingTouch(SeekBar seekBar) {}
             @Override
-            public void onStopTrackingTouch(SeekBar seekBar)
-            {
-
-            }
+            public void onStopTrackingTouch(SeekBar seekBar) {}
         });
     }
 
     private void setDepthOnPreview(int i)
     {
-        previewBitmap = Bitmap.createBitmap(mainBitmap);
         colorOverlaySubFilter = new ColorOverlaySubFilter(i, redFloat, greenFloat, blueFloat);
         subFilters.set(COLOR_OVERLAY_POSITION, colorOverlaySubFilter);
-        filter.addSubFilters(subFilters);
-        previewBitmap = filter.processFilter(previewBitmap);
-        filter.clearSubFilters();
-        preview.setImageBitmap(previewBitmap);
+        applyFilterOnMainBitmap();
         depthInt = i;
     }
 
@@ -252,31 +242,13 @@ public class AddSetFilterActivity extends AppCompatActivity
             public void onProgressChanged(SeekBar seekBar, int i, boolean b)
             {
                 float value = convertHundredToFloatFrom(i);
-
-                switch (seekBar.getId()) {
-                    case R.id.red_seek_bar:
-                        redSeekBarChange(value);
-                        break;
-                    case R.id.green_seek_bar:
-                        greenSeekBarChange(value);
-                        break;
-                    case R.id.blue_seek_bar:
-                        blueSeekBarChange(value);
-                        break;
-                }
+                chooseSeekBar(value, seekBar.getId());
             }
 
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar)
-            {
-
-            }
-
+            public void onStartTrackingTouch(SeekBar seekBar){}
             @Override
-            public void onStopTrackingTouch(SeekBar seekBar)
-            {
-
-            }
+            public void onStopTrackingTouch(SeekBar seekBar){}
         };
 
         red.setOnSeekBarChangeListener(listener);
@@ -284,17 +256,28 @@ public class AddSetFilterActivity extends AppCompatActivity
         blue.setOnSeekBarChangeListener(listener);
     }
 
+    private void chooseSeekBar(float value, int id)
+    {
+        switch (id) {
+            case R.id.red_seek_bar:
+                redSeekBarChange(value);
+                break;
+            case R.id.green_seek_bar:
+                greenSeekBarChange(value);
+                break;
+            case R.id.blue_seek_bar:
+                blueSeekBarChange(value);
+                break;
+        }
+    }
+
     private void redSeekBarChange(float value)
     {
         redValue.setText(String.valueOf(value));
 
-        previewBitmap = Bitmap.createBitmap(mainBitmap);
         colorOverlaySubFilter = new ColorOverlaySubFilter(depthInt, value, greenFloat, blueFloat);
         subFilters.set(COLOR_OVERLAY_POSITION, colorOverlaySubFilter);
-        filter.addSubFilters(subFilters);
-        previewBitmap = filter.processFilter(previewBitmap);
-        filter.clearSubFilters();
-        preview.setImageBitmap(previewBitmap);
+        applyFilterOnMainBitmap();
         redFloat = value;
     }
 
@@ -302,13 +285,9 @@ public class AddSetFilterActivity extends AppCompatActivity
     {
         greenValue.setText(String.valueOf(value));
 
-        previewBitmap = Bitmap.createBitmap(mainBitmap);
         colorOverlaySubFilter = new ColorOverlaySubFilter(depthInt, redFloat, value, blueFloat);
         subFilters.set(COLOR_OVERLAY_POSITION, colorOverlaySubFilter);
-        filter.addSubFilters(subFilters);
-        previewBitmap = filter.processFilter(previewBitmap);
-        filter.clearSubFilters();
-        preview.setImageBitmap(previewBitmap);
+        applyFilterOnMainBitmap();
         greenFloat = value;
     }
 
@@ -316,13 +295,9 @@ public class AddSetFilterActivity extends AppCompatActivity
     {
         blueValue.setText(String.valueOf(value));
 
-        previewBitmap = Bitmap.createBitmap(mainBitmap);
         colorOverlaySubFilter = new ColorOverlaySubFilter(depthInt, redFloat, greenFloat, value);
         subFilters.set(COLOR_OVERLAY_POSITION, colorOverlaySubFilter);
-        filter.addSubFilters(subFilters);
-        previewBitmap = filter.processFilter(previewBitmap);
-        filter.clearSubFilters();
-        preview.setImageBitmap(previewBitmap);
+        applyFilterOnMainBitmap();
         blueFloat = value;
     }
 

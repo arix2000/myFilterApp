@@ -17,7 +17,8 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/add_filter_preview">
+        android:layout_below="@+id/add_filter_preview"
+        android:scrollbarThumbVertical="@color/colorAccent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -49,32 +50,6 @@
                 android:id="@+id/contrast_value"
                 style="@style/numberTextViews"
                 android:text="1" />
-
-            <TextView
-                style="@style/textViews"
-                android:text="Winieta" />
-
-            <SeekBar
-                android:id="@+id/vignette_seek_bar"
-                style="@style/seekBars" />
-
-            <TextView
-                android:id="@+id/vignette_value"
-                style="@style/numberTextViews"
-                android:text="0" />
-
-            <TextView
-                style="@style/textViews"
-                android:text="Nasycenie" />
-
-            <SeekBar
-                android:id="@+id/saturation_seek_bar"
-                style="@style/seekBars" />
-
-            <TextView
-                android:id="@+id/saturation_value"
-                style="@style/numberTextViews"
-                android:text="0" />
 
             <TextView
                 style="@style/textViews"
@@ -125,6 +100,16 @@
                 android:id="@+id/blue_value"
                 style="@style/numberTextViews"
                 android:text="0" />
+
+            <Button
+                android:id="@+id/btn_vignette_and_saturation"
+                style="@style/button_style"
+                android:layout_marginTop="16dp"
+                android:drawableRight="@drawable/ic_continue"
+                android:layout_gravity="center_horizontal"
+                android:layout_width="wrap_content"
+                android:text="Vinieta i Saturacja"
+                android:layout_height="wrap_content"/>
 
         </LinearLayout>
     </ScrollView>

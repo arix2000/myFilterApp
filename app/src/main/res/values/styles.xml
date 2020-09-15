@@ -9,6 +9,7 @@
 
 
     <style name="button_style">
+        <item name="android:paddingHorizontal">10dp</item>
         <item name="android:textColor">@color/black</item>
         <item name="android:background">@drawable/button_shape</item>
     </style>
