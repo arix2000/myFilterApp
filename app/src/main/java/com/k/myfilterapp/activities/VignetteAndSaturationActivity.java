@@ -48,7 +48,7 @@ public class VignetteAndSaturationActivity extends AppCompatActivity
         filter = new Filter();
         mainBitmap = Bitmap.createBitmap(mainImage);
         preview.setImageBitmap(mainBitmap);
-        
+
         setSaveBtnListener();
         initSubFilters();
         initSeekBarAndCounter();
@@ -77,7 +77,7 @@ public class VignetteAndSaturationActivity extends AppCompatActivity
         subFilters= new ArrayList<>();
         saturationSubFilter = new SaturationSubFilter(1);
         vignetteSubFilter = new VignetteSubFilter(this,0);
-        
+
         subFilters.add(saturationSubFilter);
         subFilters.add(vignetteSubFilter);
     }
@@ -116,10 +116,10 @@ public class VignetteAndSaturationActivity extends AppCompatActivity
             @Override
             public void onStopTrackingTouch(SeekBar seekBar){}
         };
-        
+
         saturation.setOnSeekBarChangeListener(listener);
         vignette.setOnSeekBarChangeListener(listener);
-        
+
     }
 
     private void chooseSeekBar(int i, int id)
