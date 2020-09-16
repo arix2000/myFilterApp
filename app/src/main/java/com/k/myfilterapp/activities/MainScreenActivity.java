@@ -33,7 +33,7 @@ import com.k.myfilterapp.roomDatabase.PhotoFilterViewModel;
 import com.zomato.photofilters.imageprocessors.Filter;
 
 import java.util.List;
-
+//TODO solve issue -> when we choose photo that isn't BitmapDrawable then we get error
 public class MainScreenActivity extends AppCompatActivity
 {
 

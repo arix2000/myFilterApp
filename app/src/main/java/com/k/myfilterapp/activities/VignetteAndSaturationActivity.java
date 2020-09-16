@@ -46,7 +46,6 @@ public class VignetteAndSaturationActivity extends AppCompatActivity
     private VignetteSubFilter vignetteSubFilter;
     private Filter filter;
     private PhotoFilterViewModel viewModel;
-    private Bundle previousFilterInfo;
     private EditText filterName;
     private Button saveBtn;
 

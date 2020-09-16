@@ -29,8 +29,6 @@ import java.util.List;
 
 public class AddSetFilterActivity extends AppCompatActivity
 {
-
-
     public static final int CONTRAST_POSITION = 0;
     public static final int COLOR_OVERLAY_POSITION = 2;
     public static final int BRIGHTNESS_POSITION = 1;

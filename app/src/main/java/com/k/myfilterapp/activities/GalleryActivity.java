@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ShapeDrawable;
 import android.net.Uri;
@@ -103,7 +104,7 @@ public class GalleryActivity extends AppCompatActivity
     {
         Intent intent = new Intent(this, LoadingActivity.class);
         Bitmap originalBitmap = uriToBitmap(originalImageUri);
-        MainScreenActivity.mainImage = resizeBitmap(originalBitmap);
+        MainScreenActivity.mainImage = resizeBitmap(originalBitmap).copy(Bitmap.Config.RGB_565,true);
         startActivity(intent);
     }
 

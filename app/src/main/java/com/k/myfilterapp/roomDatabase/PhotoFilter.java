@@ -134,7 +134,7 @@ public class PhotoFilter
     {
 
         Filter filter = new Filter();
-        Bitmap outputBitmap = bitmap.copy(bitmap.getConfig(), true);
+        Bitmap outputBitmap = bitmap.copy(Bitmap.Config.RGB_565, true);
 
         filter.addSubFilter(new ContrastSubFilter(contrast));
         filter.addSubFilter(new BrightnessSubFilter(brightness));
