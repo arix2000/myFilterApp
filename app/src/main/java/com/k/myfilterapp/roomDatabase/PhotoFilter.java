@@ -136,11 +136,12 @@ public class PhotoFilter
         Filter filter = new Filter();
         Bitmap outputBitmap = bitmap.copy(bitmap.getConfig(), true);
 
-        filter.addSubFilter(new BrightnessSubFilter(brightness));
         filter.addSubFilter(new ContrastSubFilter(contrast));
+        filter.addSubFilter(new BrightnessSubFilter(brightness));
+        filter.addSubFilter(new ColorOverlaySubFilter(colorDepth, red, green, blue));
         filter.addSubFilter(new SaturationSubFilter(saturation));
         filter.addSubFilter(new VignetteSubFilter(context, vignetteAlpha));
-        filter.addSubFilter(new ColorOverlaySubFilter(colorDepth, red, green, blue));
+
 
         outputBitmap = filter.processFilter(outputBitmap);
 

@@ -23,6 +23,7 @@ import com.k.myfilterapp.roomDatabase.PhotoFilter;
 import com.k.myfilterapp.roomDatabase.PhotoFilterViewModel;
 import com.zomato.photofilters.imageprocessors.Filter;
 import com.zomato.photofilters.imageprocessors.SubFilter;
+import com.zomato.photofilters.imageprocessors.subfilters.ColorOverlaySubFilter;
 import com.zomato.photofilters.imageprocessors.subfilters.SaturationSubFilter;
 import com.zomato.photofilters.imageprocessors.subfilters.VignetteSubFilter;
 
@@ -47,6 +48,7 @@ public class VignetteAndSaturationActivity extends AppCompatActivity
     private PhotoFilterViewModel viewModel;
     private Bundle previousFilterInfo;
     private EditText filterName;
+    private Button saveBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -64,12 +66,15 @@ public class VignetteAndSaturationActivity extends AppCompatActivity
         setSaveBtnListener();
         initSubFilters();
         initSeekBarAndCounter();
+        if (AddSetFilterActivity.filterToEdit != null) {
+            restoreFilterProperties();
+        }
         setListener();
     }
 
     private void setSaveBtnListener()
     {
-        Button saveBtn = findViewById(R.id.btn_save_filter);
+        saveBtn = findViewById(R.id.btn_save_filter);
         saveBtn.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -82,15 +87,12 @@ public class VignetteAndSaturationActivity extends AppCompatActivity
 
     private void decideAndSaveFilter()
     {
-        if(filterName.getText().toString().trim().isEmpty())
-        {
+        if (filterName.getText().toString().trim().isEmpty()) {
             TextView nameFilterTextView = findViewById(R.id.created_filter_name_text_view);
             Toast.makeText(this, "Pole z nazwą musi być wypełnione!", Toast.LENGTH_SHORT).show();
             filterName.setBackgroundTintList(ColorStateList.valueOf(Color.RED));
             nameFilterTextView.setTextColor(Color.RED);
-        }
-        else
-        {
+        } else {
             saveFilter();
         }
 
@@ -109,10 +111,16 @@ public class VignetteAndSaturationActivity extends AppCompatActivity
         float contrast = bundle.getFloat(AddSetFilterActivity.EXTRA_CONTRAST, 0);
 
         PhotoFilter createdFilter = new PhotoFilter(filterName.getText().toString(),
-                brightness,vignette,colorDepth,red,green,blue,saturation,contrast);
+                brightness, vignette, colorDepth, red, green, blue, saturation, contrast);
 
-        viewModel.insert(createdFilter);
+        if (AddSetFilterActivity.filterToEdit != null) {
+            int id = AddSetFilterActivity.filterToEdit.getId();
+            createdFilter.setId(id);
+            viewModel.update(createdFilter);
+        } else viewModel.insert(createdFilter);
+
         backToMainScreen();
+        AddSetFilterActivity.filterToEdit = null;
     }
 
     private void backToMainScreen()
@@ -123,10 +131,16 @@ public class VignetteAndSaturationActivity extends AppCompatActivity
 
     private void initSubFilters()
     {
-        subFilters= new ArrayList<>();
+        subFilters = new ArrayList<>();
         saturationSubFilter = new SaturationSubFilter(1);
-        vignetteSubFilter = new VignetteSubFilter(this,0);
+        vignetteSubFilter = new VignetteSubFilter(this, 0);
 
+        fillSubFiltersBy(saturationSubFilter, vignetteSubFilter);
+    }
+
+    private void fillSubFiltersBy(SaturationSubFilter saturationSubFilter, VignetteSubFilter vignetteSubFilter)
+    {
+        subFilters.clear();
         subFilters.add(saturationSubFilter);
         subFilters.add(vignetteSubFilter);
     }
@@ -135,11 +149,11 @@ public class VignetteAndSaturationActivity extends AppCompatActivity
     {
         saturation = findViewById(R.id.saturation_seek_bar);
         saturationValue = findViewById(R.id.saturation_value);
-        setSeekBar(saturation, new SeekBarOptions(20,100,220));
+        setSeekBar(saturation, new SeekBarOptions(20, 100, 220));
 
         vignette = findViewById(R.id.vignette_seek_bar);
         vignetteValue = findViewById(R.id.vignette_value);
-        setSeekBar(vignette, new SeekBarOptions(0,0,255));
+        setSeekBar(vignette, new SeekBarOptions(0, 0, 255));
     }
 
     private void setSeekBar(SeekBar seekBar, SeekBarOptions seekBarOptions)
@@ -147,6 +161,31 @@ public class VignetteAndSaturationActivity extends AppCompatActivity
         seekBar.setMin(seekBarOptions.getMin());
         seekBar.setProgress(seekBarOptions.getDefaultProgress());
         seekBar.setMax(seekBarOptions.getMax());
+    }
+
+    private void restoreFilterProperties()
+    {
+        PhotoFilter filter = AddSetFilterActivity.filterToEdit;
+        previewBitmap = Bitmap.createBitmap(mainBitmap);
+        filterName.setText(filter.getFilterName());
+        saveBtn.setText("edytuj filtr");
+
+        float saturationFloat = filter.getSaturation();
+        int vignetteInt = filter.getVignetteAlpha();
+        vignetteSubFilter.setAlpha(vignetteInt);
+        saturationSubFilter.setLevel(saturationFloat);
+
+        fillSubFiltersBy(saturationSubFilter, vignetteSubFilter);
+
+        vignette.setProgress(vignetteInt);
+        vignetteValue.setText(String.valueOf(vignetteInt));
+        saturation.setProgress((int) (saturationFloat * 100));
+        saturationValue.setText(String.valueOf(saturationFloat));
+
+        this.filter.addSubFilters(subFilters);
+        previewBitmap = this.filter.processFilter(previewBitmap);
+        preview.setImageBitmap(previewBitmap);
+        this.filter.clearSubFilters();
     }
 
     private void setListener()
@@ -161,9 +200,14 @@ public class VignetteAndSaturationActivity extends AppCompatActivity
             }
 
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar){}
+            public void onStartTrackingTouch(SeekBar seekBar)
+            {
+            }
+
             @Override
-            public void onStopTrackingTouch(SeekBar seekBar){}
+            public void onStopTrackingTouch(SeekBar seekBar)
+            {
+            }
         };
 
         saturation.setOnSeekBarChangeListener(listener);
@@ -173,10 +217,13 @@ public class VignetteAndSaturationActivity extends AppCompatActivity
 
     private void chooseSeekBar(int i, int id)
     {
-        switch (id)
-        {
-            case R.id.saturation_seek_bar: saturationChange(convertHundredToFloatFrom(i)); break;
-            case R.id.vignette_seek_bar: vignetteChange(i); break;
+        switch (id) {
+            case R.id.saturation_seek_bar:
+                saturationChange(convertHundredToFloatFrom(i));
+                break;
+            case R.id.vignette_seek_bar:
+                vignetteChange(i);
+                break;
         }
     }
 
@@ -194,7 +241,7 @@ public class VignetteAndSaturationActivity extends AppCompatActivity
         vignetteValue.setText(String.valueOf(i));
 
         vignetteSubFilter.setAlpha(i);
-        subFilters.set(VIGNETTE_POSITION,vignetteSubFilter);
+        subFilters.set(VIGNETTE_POSITION, vignetteSubFilter);
         applyFilterOnMainBitmap();
     }
 

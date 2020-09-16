@@ -1,6 +1,7 @@
 package com.k.myfilterapp.roomDatabase;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -33,5 +34,11 @@ public class PhotoFilterViewModel extends AndroidViewModel
     public void delete(PhotoFilter filter)
     {
         filterRepository.delete(filter);
+        Log.d("TAG_REPOSITORY", "run: SUCCESFULLY");
+    }
+
+    public void update(PhotoFilter filter)
+    {
+        filterRepository.update(filter);
     }
 }

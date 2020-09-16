@@ -1,6 +1,7 @@
 package com.k.myfilterapp.roomDatabase;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Database;
@@ -46,6 +47,19 @@ public class PhotoFilterRepository
             public void run()
             {
                 filterDao.delete(filter);
+
+            }
+        }).start();
+    }
+
+    public void update(final PhotoFilter filter)
+    {
+        new Thread(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                filterDao.update(filter);
             }
         }).start();
     }

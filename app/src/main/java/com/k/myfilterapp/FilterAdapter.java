@@ -21,6 +21,7 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.FilterHold
 {
     private List<PhotoFilter> filters = new ArrayList<>();
     private OnItemClickListener listener;
+    private OnLongItemClickListener longListener;
     private ProgressBar progressBar;
 
     @NonNull
@@ -88,6 +89,20 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.FilterHold
                     }
                 }
             });
+
+            itemView.setOnLongClickListener(new View.OnLongClickListener()
+            {
+                @Override
+                public boolean onLongClick(View view)
+                {
+                    int position = getAdapterPosition();
+                    if(longListener!=null && position!= RecyclerView.NO_POSITION)
+                    {
+                        longListener.onLongItemClick(filters.get(position));
+                    }
+                    return true;
+                }
+            });
         }
     }
 
@@ -100,6 +115,16 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.FilterHold
     public interface OnItemClickListener
     {
         void onItemClick(PhotoFilter filter, TextView filterPreview);
+    }
+
+    public interface OnLongItemClickListener
+    {
+        void onLongItemClick(PhotoFilter filter);
+    }
+
+    public void setOnLongItemClickListener(OnLongItemClickListener listener)
+    {
+        this.longListener = listener;
     }
 
     public void setOnItemClickListener(OnItemClickListener listener)
