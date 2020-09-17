@@ -1,5 +1,7 @@
 package com.k.myfilterapp.activities;
 
+import androidx.annotation.LongDef;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -7,13 +9,21 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Dialog;
+import android.content.ContentResolver;
+import android.content.ContentUris;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.ShapeDrawable;
+import android.media.MediaScannerConnection;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Parcelable;
+import android.os.SystemClock;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -32,8 +42,14 @@ import com.k.myfilterapp.roomDatabase.PhotoFilter;
 import com.k.myfilterapp.roomDatabase.PhotoFilterViewModel;
 import com.zomato.photofilters.imageprocessors.Filter;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.List;
-//TODO solve issue -> when we choose photo that isn't BitmapDrawable then we get error
+import java.util.Random;
+
 public class MainScreenActivity extends AppCompatActivity
 {
 
@@ -65,10 +81,65 @@ public class MainScreenActivity extends AppCompatActivity
         filterViewModel = new ViewModelProvider(this,
                 new ViewModelProvider.AndroidViewModelFactory(this.getApplication())).get(PhotoFilterViewModel.class);
 
+        initSaveButtonListener();
         initAddButtonListener();
         initRecycleViewThings();
     }
 
+    private void initSaveButtonListener()
+    {
+        ImageButton button = findViewById(R.id.btn_save_filter);
+        button.setBackground(new ShapeDrawable(new ButtonShape()));
+        button.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                saveImageToDevice();
+            }
+        });
+    }
+
+    private void saveImageToDevice()
+    {
+        // mainBitmap <--- bitmap to save
+
+        ContentResolver resolver = getApplicationContext().getContentResolver();
+        ContentValues values = createContentValues();
+        Uri url = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+        addImageToMediaStore(resolver, url);
+
+    }
+
+    private ContentValues createContentValues()
+    {
+        ContentValues values = new ContentValues();
+        values.put(MediaStore.Images.Media.TITLE, "title");
+        values.put(MediaStore.Images.Media.DISPLAY_NAME, "image" + SystemClock.elapsedRealtime());
+        values.put(MediaStore.Images.Media.DESCRIPTION, "savedImage");
+        values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
+        // Add the date meta data to ensure the image is added at the front of the gallery
+        values.put(MediaStore.Images.Media.DATE_ADDED, System.currentTimeMillis());
+        values.put(MediaStore.Images.Media.DATE_TAKEN, System.currentTimeMillis());
+        return values;
+    }
+
+    private void addImageToMediaStore(ContentResolver resolver, @Nullable Uri url)
+    {
+        try {
+            if(url != null) {
+                OutputStream imageOut = resolver.openOutputStream(url);
+                mainBitmap.compress(Bitmap.CompressFormat.JPEG, 50, imageOut);
+                imageOut.close();
+                Toast.makeText(this, "Zdjęcie zostało zapisane!", Toast.LENGTH_SHORT).show();
+            }
+            else Toast.makeText(this, "Nie udało się zapisać zdjęcia :(", Toast.LENGTH_SHORT).show();
+
+        } catch (IOException e) {
+            Log.d(TAG, "something wrong: " + e.getMessage());
+            Toast.makeText(this, "Nie udało się zapisać zdjęcia :(", Toast.LENGTH_SHORT).show();
+        }
+    }
 
     private void initAddButtonListener()
     {
@@ -130,15 +201,28 @@ public class MainScreenActivity extends AppCompatActivity
         filterAdapter.setOnItemClickListener(new FilterAdapter.OnItemClickListener()
         {
             TextView previousTextView;
+
             @Override
             public void onItemClick(PhotoFilter filter, TextView currentTextView)
             {
                 currentOnClickFilter = filter;
-                chooseFilter(previousTextView,currentTextView);
+                chooseFilter(previousTextView, currentTextView);
                 previousTextView = currentTextView;
                 previousOnClickFilter = currentOnClickFilter;
             }
         });
+    }
+
+    private void chooseFilter(TextView previousTextView, TextView currentTextView)
+    {
+        ChangeFiltersStateHelper.removePreviousTextViewTypeface(previousTextView);
+        if (previousOnClickFilter != null) previousOnClickFilter.setWasClicked(false);
+
+        ChangeFiltersStateHelper.setCurrentTextViewTypeface(currentTextView);
+        currentOnClickFilter.setWasClicked(true);
+
+        mainBitmap = currentOnClickFilter.getFilteredBitmap();
+        inputImage.setImageBitmap(mainBitmap);
     }
 
     private void initOnLongItemClickListener()
@@ -162,7 +246,7 @@ public class MainScreenActivity extends AppCompatActivity
         initImageViewAndFilterName(dialog, filter);
         initContainer(dialog);
         initEditBtnListener(dialog, filter);
-        initDeleteBtnListener(dialog,filter);
+        initDeleteBtnListener(dialog, filter);
 
     }
 
@@ -225,16 +309,6 @@ public class MainScreenActivity extends AppCompatActivity
         relativeLayout.setBackground(new ShapeDrawable(buttonShapeForDialogBg));
     }
 
-    private void chooseFilter(TextView previousTextView, TextView currentTextView)
-    {
-        ChangeFiltersStateHelper.removePreviousTextViewTypeface(previousTextView);
-        if(previousOnClickFilter != null) previousOnClickFilter.setWasClicked(false);
-
-        ChangeFiltersStateHelper.setCurrentTextViewTypeface(currentTextView);
-        currentOnClickFilter.setWasClicked(true);
-
-        inputImage.setImageBitmap(currentOnClickFilter.getFilteredBitmap());
-    }
 
     @Override
     public void onBackPressed()

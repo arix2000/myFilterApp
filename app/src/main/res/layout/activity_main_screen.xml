@@ -27,6 +27,17 @@
         tools:listitem="@layout/single_filter_item_view"/>
 
     <ImageButton
+        android:id="@+id/btn_save_filter"
+        style="@style/button_style"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_marginBottom="10dp"
+        android:padding="10dp"
+        android:src="@drawable/ic_save"
+        android:layout_above="@+id/recycler_view"/>
+
+    <ImageButton
         android:id="@+id/btn_add_filter"
         style="@style/button_style"
         android:layout_width="wrap_content"

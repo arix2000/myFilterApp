@@ -104,7 +104,7 @@ public class GalleryActivity extends AppCompatActivity
     {
         Intent intent = new Intent(this, LoadingActivity.class);
         Bitmap originalBitmap = uriToBitmap(originalImageUri);
-        MainScreenActivity.mainImage = resizeBitmap(originalBitmap).copy(Bitmap.Config.RGB_565,true);
+        MainScreenActivity.mainImage = resizeBitmap(originalBitmap).copy(Bitmap.Config.ARGB_8888,true);
         startActivity(intent);
     }
 
