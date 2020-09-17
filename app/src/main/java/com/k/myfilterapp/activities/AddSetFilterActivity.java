@@ -149,7 +149,7 @@ public class AddSetFilterActivity extends AppCompatActivity
 
         contrast = findViewById(R.id.contrast_seek_bar);
         contrastValue = findViewById(R.id.contrast_value);
-        setSeekBar(contrast, new SeekBarOptions(20, 100, 220));
+        setSeekBar(contrast, new SeekBarOptions(20, 100, 250));
 
         depth = findViewById(R.id.color_depth_seek_bar);
         depthValue = findViewById(R.id.color_depth_value);

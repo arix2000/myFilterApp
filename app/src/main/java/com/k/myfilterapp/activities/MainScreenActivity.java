@@ -103,7 +103,6 @@ public class MainScreenActivity extends AppCompatActivity
     private void saveImageToDevice()
     {
         // mainBitmap <--- bitmap to save
-
         ContentResolver resolver = getApplicationContext().getContentResolver();
         ContentValues values = createContentValues();
         Uri url = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);

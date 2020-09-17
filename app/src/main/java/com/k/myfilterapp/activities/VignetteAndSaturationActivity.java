@@ -148,7 +148,7 @@ public class VignetteAndSaturationActivity extends AppCompatActivity
     {
         saturation = findViewById(R.id.saturation_seek_bar);
         saturationValue = findViewById(R.id.saturation_value);
-        setSeekBar(saturation, new SeekBarOptions(20, 100, 220));
+        setSeekBar(saturation, new SeekBarOptions(20, 100, 250));
 
         vignette = findViewById(R.id.vignette_seek_bar);
         vignetteValue = findViewById(R.id.vignette_value);
