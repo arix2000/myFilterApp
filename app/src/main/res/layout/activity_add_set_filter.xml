@@ -26,6 +26,18 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/restore_default"
+                android:text="Przywróć domyślne"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_marginTop="6dp"
+                android:textStyle="bold"
+                android:textColor="@color/colorAccent"
+                android:clickable="true"
+                android:layout_gravity="center_horizontal"/>
+
+            <TextView
+                android:layout_marginTop="8dp"
                 style="@style/textViews"
                 android:text="Jasność" />
 

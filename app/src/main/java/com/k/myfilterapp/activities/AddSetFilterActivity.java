@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.ShapeDrawable;
 import android.os.Bundle;
 
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -69,6 +70,7 @@ public class AddSetFilterActivity extends AppCompatActivity
 
         filter = new Filter();
 
+        initRestoreDefault();
         initBtnOnClickListener();
         initSubFilters();
         initSeekBarAndCounters();
@@ -91,6 +93,25 @@ public class AddSetFilterActivity extends AppCompatActivity
         greenFloat = 0;
         blueFloat = 0;
         depthInt = 0;
+    }
+
+    private void initRestoreDefault()
+    {
+        TextView restoreDefault = findViewById(R.id.restore_default);
+
+        restoreDefault.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                if (filterToEdit != null) restoreFilterProperties();
+                else {
+                    initSubFilters();
+                    initSeekBarAndCounters();
+                }
+            }
+        });
+
     }
 
     private void initBtnOnClickListener()
@@ -202,15 +223,15 @@ public class AddSetFilterActivity extends AppCompatActivity
 
         brightness.setProgress(brightnessInt);
         brightnessValue.setText(String.valueOf(brightnessInt));
-        contrast.setProgress((int) (contrastFloat*100));
+        contrast.setProgress((int) (contrastFloat * 100));
         contrastValue.setText(String.valueOf(contrastFloat));
         depth.setProgress(colorDepth);
         depthValue.setText(String.valueOf(colorDepth));
-        this.red.setProgress((int) (red*100));
+        this.red.setProgress((int) (red * 100));
         redValue.setText(String.valueOf(red));
-        this.green.setProgress((int) (green*100));
+        this.green.setProgress((int) (green * 100));
         greenValue.setText(String.valueOf(green));
-        this.blue.setProgress((int) (blue*100));
+        this.blue.setProgress((int) (blue * 100));
         blueValue.setText(String.valueOf(blue));
 
         this.filter.addSubFilters(subFilters);
