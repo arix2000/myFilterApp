@@ -62,13 +62,10 @@ public abstract class PhotoFilterDatabase extends RoomDatabase
     {
         List<PhotoFilter> outputFilters = new ArrayList<>();
 
-        outputFilters.add(new PhotoFilter("example1",50,1.5f,1.5f));
-        outputFilters.add(new PhotoFilter("example2",30,1.1f,1.2f));
-        outputFilters.add(new PhotoFilter("example3",0,2f,0.7f));
-        outputFilters.add(new PhotoFilter("example4",0,2f,0.7f));
-        outputFilters.add(new PhotoFilter("example5",0,40f,0.7f));
-        outputFilters.add(new PhotoFilter("example6",0,2f,2f));
-        outputFilters.add(new PhotoFilter("example7",0,255,0.7f,1.5f));
+        outputFilters.add(new PhotoFilter("Bez filtrów",0,1f,1f));
+        outputFilters.add(new PhotoFilter("przykład 1",0,2f,0.7f));
+        outputFilters.add(new PhotoFilter("przykład 2",0,2f,2f));
+        outputFilters.add(new PhotoFilter("przykład 3",0,255,0.7f,1.5f));
 
         return outputFilters;
     }

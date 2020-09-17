@@ -231,6 +231,7 @@ public class MainScreenActivity extends AppCompatActivity
             @Override
             public void onLongItemClick(PhotoFilter filter)
             {
+                if(filter.getId() != 1) //the first element is the default so we don't want to edit or delete him
                 showDialogToChoose(filter);
             }
         });
